@@ -1,0 +1,12 @@
+
+dependencies {
+    compile 'org.jctools:jctools-core:2.1.0'
+}
+
+//dokka {
+//    moduleName = 'tech.pronghorn.coroutines'
+//    outputFormat = 'javadoc'
+//    outputDirectory = "$buildDir/javadoc"
+//    processConfigurations = ['compile']
+//    sourceDirs = files('src/main/kotlin')
+//}
