@@ -18,11 +18,36 @@ package tech.pronghorn.plugins
 
 import org.jctools.queues.MpscArrayQueue
 import org.jctools.queues.MpscUnboundedArrayQueue
+import tech.pronghorn.plugins.mpscQueue.DrainableQueue
 import tech.pronghorn.plugins.mpscQueue.MpscQueuePlugin
-import java.util.Queue
 
-object JCToolsMpscQueuePlugin : MpscQueuePlugin {
-    override fun <T> getBounded(capacity: Int): Queue<T> = MpscArrayQueue(capacity)
+public object JCToolsMpscQueuePlugin : MpscQueuePlugin {
+    private class DrainableMpscArrayQueue<T>(capacity: Int,
+                                             private val jctoolsQueue: MpscArrayQueue<T> = MpscArrayQueue(capacity)) : DrainableQueue<T>(jctoolsQueue) {
+        override fun drainTo(collection: MutableCollection<T>,
+                             maxElements: Int): Int {
+            return jctoolsQueue.drain({ collection.add(it) }, maxElements)
+        }
 
-    override fun <T> getUnbounded(): Queue<T> = MpscUnboundedArrayQueue(1024)
+        override fun fillFrom(collection: Collection<T>): Int {
+            val iterator = collection.iterator()
+            return jctoolsQueue.fill({ iterator.next() }, collection.size)
+        }
+    }
+
+    private class DrainableMpscUnboundedArrayQueue<T>(private val jctoolsQueue: MpscUnboundedArrayQueue<T> = MpscUnboundedArrayQueue(1024)) : DrainableQueue<T>(jctoolsQueue) {
+        override fun drainTo(collection: MutableCollection<T>,
+                             maxElements: Int): Int {
+            return jctoolsQueue.drain({ collection.add(it) }, maxElements)
+        }
+
+        override fun fillFrom(collection: Collection<T>): Int {
+            val iterator = collection.iterator()
+            return jctoolsQueue.fill({ iterator.next() }, collection.size)
+        }
+    }
+
+    override fun <T> getBounded(capacity: Int): DrainableQueue<T> = DrainableMpscArrayQueue(capacity)
+
+    override fun <T> getUnbounded(): DrainableQueue<T> = DrainableMpscUnboundedArrayQueue()
 }

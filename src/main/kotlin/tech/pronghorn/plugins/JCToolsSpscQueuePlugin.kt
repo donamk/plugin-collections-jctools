@@ -21,7 +21,7 @@ import org.jctools.queues.SpscUnboundedArrayQueue
 import tech.pronghorn.plugins.spscQueue.SpscQueuePlugin
 import java.util.Queue
 
-object JCToolsSpscQueuePlugin : SpscQueuePlugin {
+public object JCToolsSpscQueuePlugin : SpscQueuePlugin {
     override fun <T> getBounded(capacity: Int): Queue<T> = SpscArrayQueue(capacity)
 
     override fun <T> getUnbounded(): Queue<T> = SpscUnboundedArrayQueue(1024)
