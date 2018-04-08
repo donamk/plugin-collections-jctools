@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        kotlinVersion = '1.1.51'
+        kotlinVersion = '1.2.31'
     }
 
     repositories {
@@ -14,7 +14,7 @@ buildscript {
 }
 
 group 'tech.pronghorn'
-version '0.1.3-SNAPSHOT'
+version '0.2.0-SNAPSHOT'
 
 apply plugin: 'kotlin'
 apply plugin: 'org.junit.platform.gradle.plugin'
@@ -27,9 +27,9 @@ uploadArchives {
                 artifactId = 'plugin-collections-jctools'
             }
             pom.project {
-                name 'Pronghorn HTTP Server JCTools Collections Plugin'
+                name 'Pronghorn Framework JCTools Collections Plugin'
                 packaging 'jar'
-                description 'A plugin for the Pronghorn HTTP Server utilizing JCTools for various collections.'
+                description 'A plugin for the Pronghorn Framework utilizing JCTools for various collections.'
                 url 'https://pronghorn.tech'
                 scm {
                     url 'https://github.com/pronghorn-tech/plugin-collections-jctools.git'
@@ -49,8 +49,8 @@ repositories {
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
     compile "tech.pronghorn:common:$version"
-    compile 'org.jctools:jctools-core:2.1.0'
+    compile 'org.jctools:jctools-core:2.1.1'
 
-    testCompile 'org.junit.jupiter:junit-jupiter-engine:5.0.0'
-    testCompile 'org.mockito:mockito-core:2.10.0'
+    testCompile 'org.junit.jupiter:junit-jupiter-engine:5.1.0'
+    testCompile 'org.mockito:mockito-core:2.16.0'
 }
